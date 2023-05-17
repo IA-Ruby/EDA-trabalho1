@@ -1,16 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-void newVector(int *ret, int size){
-    for(int i = 1; i <= size; i++)
-    {
-        ret[i] = rand()%99+1;
-    }
-}
+#include <time.h>
 
 // t -> Tabela
 // n -> Tamanho da tebela
 // i -> Posição da tabela
+
+void imprimeHeap(int *t, int size){
+    for(int i = 1; i <= size; i++)
+    {
+        int j = i;
+        if(j%2 == 0){
+            j++;
+        }
+        while(j > 1){
+            printf(" ");
+            j--;
+        }    
+        printf("[%d]: %d\n", i, t[i]);
+    }
+}
+
+void imprimeOrdenado(int *t, int size){
+    for(int i = 1; i <= size; i++)
+    {
+        printf("[%d]: %d\n", i, t[i]);
+    }
+}
 
 //subir
 void subir(int *t, int n, int i){
@@ -61,6 +77,7 @@ void remover(int *t, int *n){
     if((*n) != 0){
         t[1] = t[(*n)];
         *n = *n - 1;
+        t = realloc(t,(*n) * sizeof(int));
         descer(t, (*n), 1);
     }else{
         printf("Underflow: tabela vazia");
@@ -68,17 +85,16 @@ void remover(int *t, int *n){
 }
 
 //Construir
-void construir(int *t, int *n){
-    for(int i = (*n)/2; i >= 1; i--){
-        descer(t, (*n), i);
+void construir(int *t, int n){
+    for(int i = n/2; i >= 1; i--){
+        descer(t, n, i);
     }
 }
 
 //HeapSort
-void heapSort(int *t, int *n){
+void heapSort(int *t, int n){
     construir(t, n);
-    for(int i = (*n); i >= 2; i--){
-        printf("%d\n",i);
+    for(int i = n; i >= 2; i--){
         int aux = t[1];
         t[1] = t[i];
         t[i] = aux;
@@ -87,66 +103,87 @@ void heapSort(int *t, int *n){
 }
 
 //InsertionSort
-
+void insertionSort(int *t, int n){
+    int i = 2;
+    int aux = i;
+    while( i <= n ){
+        if( aux > 1 && t[aux] < t[aux-1]){
+            int swap = t[aux];
+            t[aux] = t[aux-1];
+            t[aux-1] = swap;
+            aux--;
+        }else{
+            aux = ++i;
+        }    
+    }
+}
 
 int main(){
 
     int timer;
 
-    int size = 0;
-    int *vetor = (int*)malloc(size * sizeof(int));
-    vetor[0] = 0;
+    //int size = 1000;
+    //int size = 100000;
+    int size = 10000000;
+    //int size = 1000000000;
 
-    inserir(vetor, &size, 90);
-    inserir(vetor, &size, 100);
-    inserir(vetor, &size, 30);
-    inserir(vetor, &size, 55);
-    inserir(vetor, &size, 18);
-    inserir(vetor, &size, 48);
-    inserir(vetor, &size, 88);
-    inserir(vetor, &size, 71);
-    inserir(vetor, &size, 180);
 
-    remover(vetor, &size);
-    remover(vetor, &size);
+    int *vectorSH = (int*)malloc(size * sizeof(int));
+    int *vectorIS = (int*)malloc(size * sizeof(int));
+    vectorSH[0] = 0;
+    vectorIS[0] = 0;
 
-    //newVector(vetor, size);
-    size = 10000;    
-
-    newVector(vetor, size);
-
-    /*Sem HeapSort
-    for(int i = 1; i <= size; i++)
-    {
-        int j = i;
-        if(j%2 == 0){
-            j++;
-        }
-        while(j > 1){
-            printf(" ");
-            j--;
-        }    
-        printf("[%d]: %d\n", i, vetor[i]);
+    for(int i = 1; i <= size; i++){
+        int aux = rand()%100+1;
+        vectorSH[i] = aux;
+        vectorIS[i] = aux;
     }
-    */
-    heapSort(vetor,&size);
- 
-    /*Com HeapSort
-    for(int i = 1; i <= size; i++)
-    {
-        int j = i;
-        if(j%2 == 0){
-            j++;
-        }
-        while(j > 1){
-            printf(" ");
-            j--;
-        }    
-        printf("[%d]: %d\n", i, vetor[i]);
-    }
-    */
 
-    printf("Terminou \n");
+
+
+    //Sem Sort
+    /*
+    printf("Sem ordenação:  \n\n\n");
+    imprimeOrdenado(vector, size);
+    */
+    printf("\n---------------------------------------------------------------------------\n\n");
+
+    //HeapSort
+
+    //Começa o relogio
+    int total = 0;
+    clock_t before = clock();
+
+    //Ordena o vetor
+    heapSort(vectorSH, size);
+
+    //Calcula o tempo do relogio
+    clock_t difference = clock() - before;
+    total = difference * 1000 / CLOCKS_PER_SEC;
+
+    //Imprime os resultados
+    //imprimeOrdenado(vectorSH, size);
+    printf("\n---------------------------------------------------------------------------\n\n");
+    printf("Tempo HeapSort: \n Segundos: %d\n Milisegundos: %d\n\n", total/1000, total%1000);
+
+    //InsertionSort
+
+    //Reseta o relogio
+    int total2 = 0;
+    clock_t before2 = clock();
+
+    // Ordena o vetor
+    insertionSort(vectorIS, size);
+    
+    //Cacula o tempo
+    clock_t difference2 = clock() - before2;
+    total2 = difference2 * 1000 / CLOCKS_PER_SEC;
+
+    //Imprime os resultados
+    //imprimeOrdenado(vectorIS, size);
+    printf("\n---------------------------------------------------------------------------\n\n");
+    printf("Tempo InsertionSort: \n Segundos: %d\n Milisegundos: %d\n\n", total2/1000, total2%1000);
+    printf("\n---------------------------------------------------------------------------\n\n");
 
     return 0;
 }
