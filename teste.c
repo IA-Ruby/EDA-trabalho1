@@ -104,17 +104,15 @@ void heapSort(int *t, int n){
 
 //InsertionSort
 void insertionSort(int *t, int n){
-    int i = 2;
-    int aux = i;
-    while( i <= n ){
-        if( aux > 1 && t[aux] < t[aux-1]){
-            int swap = t[aux];
-            t[aux] = t[aux-1];
-            t[aux-1] = swap;
-            aux--;
-        }else{
-            aux = ++i;
-        }    
+    for(int i = 2; i <= n; i++){
+        int chave = t[i];
+        int j = i-1;
+        while( j >= 1 && t[j] > chave ){
+            int swap = t[j+1];
+            t[j+1] = t[j];
+            t[j] = swap;
+            j--;
+        }
     }
 }
 
@@ -127,7 +125,6 @@ int main(){
     int size = 10000000;
     //int size = 1000000000;
 
-
     int *vectorSH = (int*)malloc(size * sizeof(int));
     int *vectorIS = (int*)malloc(size * sizeof(int));
     vectorSH[0] = 0;
@@ -138,8 +135,6 @@ int main(){
         vectorSH[i] = aux;
         vectorIS[i] = aux;
     }
-
-
 
     //Sem Sort
     /*
@@ -169,20 +164,67 @@ int main(){
     //InsertionSort
 
     //Reseta o relogio
-    int total2 = 0;
-    clock_t before2 = clock();
+    total = 0;
+    before = clock();
 
     // Ordena o vetor
     insertionSort(vectorIS, size);
     
     //Cacula o tempo
-    clock_t difference2 = clock() - before2;
-    total2 = difference2 * 1000 / CLOCKS_PER_SEC;
+    difference = clock() - before;
+    total = difference * 1000 / CLOCKS_PER_SEC;
 
     //Imprime os resultados
     //imprimeOrdenado(vectorIS, size);
     printf("\n---------------------------------------------------------------------------\n\n");
-    printf("Tempo InsertionSort: \n Segundos: %d\n Milisegundos: %d\n\n", total2/1000, total2%1000);
+    printf("Tempo InsertionSort: \n Segundos: %d\n Milisegundos: %d\n\n", total/1000, total%1000);
+    printf("\n---------------------------------------------------------------------------\n\n");
+
+
+    printf("1.000.000.000");
+    int size2 = 1000000000;
+    int *vectorSH2 = (int*)malloc(size2 * sizeof(int));
+    int *vectorIS2 = (int*)malloc(size2 * sizeof(int));
+    vectorSH2[0] = 0;
+    vectorIS2[0] = 0;
+
+    printf("\n---------------------------------------------------------------------------\n\n");
+
+    //HeapSort
+
+    //Começa o relogio
+    total = 0;
+    before = clock();
+
+    //Ordena o vetor
+    heapSort(vectorSH, size);
+
+    //Calcula o tempo do relogio
+    difference = clock() - before;
+    total = difference * 1000 / CLOCKS_PER_SEC;
+
+    //Imprime os resultados
+    //imprimeOrdenado(vectorSH, size);
+    printf("\n---------------------------------------------------------------------------\n\n");
+    printf("Tempo HeapSort: \n Segundos: %d\n Milisegundos: %d\n\n", total/1000, total%1000);
+
+    //InsertionSort
+
+    //Reseta o relogio
+    total = 0;
+    before = clock();
+
+    // Ordena o vetor
+    insertionSort(vectorIS, size);
+    
+    //Cacula o tempo
+    difference = clock() - before;
+    total = difference * 1000 / CLOCKS_PER_SEC;
+
+    //Imprime os resultados
+    //imprimeOrdenado(vectorIS, size);
+    printf("\n---------------------------------------------------------------------------\n\n");
+    printf("Tempo InsertionSort: \n Segundos: %d\n Milisegundos: %d\n\n", total/1000, total%1000);
     printf("\n---------------------------------------------------------------------------\n\n");
 
     return 0;
