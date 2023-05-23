@@ -122,8 +122,8 @@ int main(){
 
     //int size = 1000;
     //int size = 100000;
-    int size = 10000000;
-    //int size = 1000000000;
+    //int size = 10000000;
+    int size = 1000000000;
 
     int *vectorSH = (int*)malloc(size * sizeof(int));
     int *vectorIS = (int*)malloc(size * sizeof(int));
@@ -168,7 +168,7 @@ int main(){
     before = clock();
 
     // Ordena o vetor
-    insertionSort(vectorIS, size);
+    //insertionSort(vectorIS, size);
     
     //Cacula o tempo
     difference = clock() - before;

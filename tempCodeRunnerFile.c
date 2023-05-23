@@ -1,2 +1,1 @@
 
-    int *vectorIS = vector;
