@@ -122,8 +122,8 @@ int main(){
 
     //int size = 1000;
     //int size = 100000;
-    //int size = 10000000;
-    int size = 1000000000;
+    int size = 10000000;
+    //int size = 1000000000;
 
     int *vectorSH = (int*)malloc(size * sizeof(int));
     int *vectorIS = (int*)malloc(size * sizeof(int));
@@ -137,10 +137,10 @@ int main(){
     }
 
     //Sem Sort
-    /*
+    
     printf("Sem ordenação:  \n\n\n");
-    imprimeOrdenado(vector, size);
-    */
+    //imprimeOrdenado(vectorSH, size);
+    
     printf("\n---------------------------------------------------------------------------\n\n");
 
     //HeapSort
